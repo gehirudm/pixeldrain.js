@@ -14,8 +14,8 @@ export class PixelDrain {
     /**
      * getFile
      */
-    public getFile(id: string): Promise<File> {
-        return new Promise<File>((resolve, reject) => {
+    public getFile(id: string): Promise<PixeldrainFile> {
+        return new Promise<PixeldrainFile>((resolve, reject) => {
             this.pixeldrainService.getFileInfo(id)
                 .then((data) => {
                     return new PixeldrainFile(data, this.pixeldrainService)
