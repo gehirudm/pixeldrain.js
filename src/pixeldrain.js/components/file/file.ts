@@ -42,13 +42,17 @@ export class PixeldrainFile implements PixeldrainFileInterface {
     delete(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.pixeldrainService.deleteFile(this.id)
-            .then(resolve)
-            .catch(reject)
+                .then(resolve)
+                .catch(reject)
         })
     }
 
     download(path: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        return new Promise<void>((resolve, reject) => {
+            this.pixeldrainService.downloadFile(path, this.id)
+                .then(resolve)
+                .catch(reject)
+        })
     }
 
     downloadThumbnail(path: string): Promise<void> {
