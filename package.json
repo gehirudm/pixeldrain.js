@@ -1,6 +1,6 @@
 {
   "name": "pixeldrainjs",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "A NodeJS Wrapper for the pixeldrain.com API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
