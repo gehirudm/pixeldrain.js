@@ -24,10 +24,11 @@
   },
   "homepage": "https://github.com/gehirudm/pixeldrain.js#readme",
   "dependencies": {
-    "node-fetch": "^3.3.1",
+    "node-fetch": "^2.6.9",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11"
+    "@types/node": "^18.15.11",
+    "@types/node-fetch": "^2.6.3"
   }
 }
