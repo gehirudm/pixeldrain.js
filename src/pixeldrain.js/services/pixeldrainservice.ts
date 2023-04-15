@@ -4,9 +4,8 @@ import { List } from "../interfaces/list/listinterfaces";
 
 import fetch from 'node-fetch';
 import * as fs from 'fs';
-import { pipeline } from 'node:stream/promises';
 import * as http from 'http';
-import { Readable } from "stream";
+
 
 export class PixeldrainService {
     APIKey: string;
@@ -28,7 +27,7 @@ export class PixeldrainService {
             let readStream = fs.createReadStream(file.path);
 
             fetch(`${this.BASE_URL}/file/${file.name}`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: file.anonymous ? undefined : this.authorizationHeader,
                 body: readStream
             })
