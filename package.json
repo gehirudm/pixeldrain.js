@@ -1,0 +1,34 @@
+{
+  "name": "pixeldrain.js",
+  "version": "0.3.0",
+  "description": "A NodeJS Wrapper for the pixeldrain.com API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gehirudm/pixeldrain.js.git"
+  },
+  "keywords": [
+    "pixeldrain"
+  ],
+  "author": "Gehiru Damnidu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gehirudm/pixeldrain.js/issues"
+  },
+  "homepage": "https://github.com/gehirudm/pixeldrain.js#readme",
+  "dependencies": {
+    "got": "^12.6.0",
+    "node-fetch": "^3.3.1",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  }
+}
