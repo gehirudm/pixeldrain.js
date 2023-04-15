@@ -5,8 +5,8 @@ import { List } from "../interfaces/list/listinterfaces";
 import fetch from 'node-fetch';
 import * as fs from 'fs';
 import { pipeline } from 'node:stream/promises';
-import got from 'got';
-import { resolve } from "path";
+import * as http from 'http';
+import { Readable } from "stream";
 
 export class PixeldrainService {
     APIKey: string;
@@ -95,10 +95,18 @@ export class PixeldrainService {
     public downloadFile(path: string = "", id: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.getFileInfo(id).then((file) => {
-                pipeline(
-                    got.stream(`${this.BASE_URL}/file/${id}?download`),
-                    fs.createWriteStream(path == "" ? file.name : `${path}/${file.name}`)
-                ).then(resolve).catch(reject)
+                http.get(`${this.BASE_URL}/file/${id}`, function (response) {
+                    const writeSteam = fs.createWriteStream(path == "" ? file.name : `${path}/${file.name}`)
+
+                    response.pipe(writeSteam);
+
+                    writeSteam.on("finish", () => {
+                        writeSteam.close();
+                        resolve()
+                    });
+
+                    writeSteam.on("error", reject)
+                });
             })
         })
     }
