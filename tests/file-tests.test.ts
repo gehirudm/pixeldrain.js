@@ -27,21 +27,21 @@ describe("Testing File functions", () => {
 
         test("File Upload testing", async () => {
             let file = await client.uploadFile({
-                path: "./resources/test-text.txt",
-                name: "test-file",
+                path: "./tests/resources/test-text.txt",
+                name: "upload test",
                 anonymous: false,
             })
             uploadedTestFiles.push(file);
 
             let sameFile = await client.getFile(file.id)
 
-            expect(sameFile.name).toBe("test-file")
+            expect(sameFile.name).toBe("upload test")
             expect(sameFile.can_edit).toBeTruthy()
         })
 
         test("Anonymous File Upload testing", async () => {
             let file = await client.uploadFile({
-                path: "./resources/test-text.txt",
+                path: "./tests/resources/test-text.txt",
                 name: "test-file",
                 anonymous: true,
             })
@@ -53,19 +53,41 @@ describe("Testing File functions", () => {
             expect(sameFile.name).toBe("test-file")
             expect(sameFile.can_edit).toBeFalsy()
         })
+    })
+
+    describe("Testing File deletion functions", () => {
+        let client = new PixelDrain("fe2f1e37-32b3-4f75-b16b-f51cf4c5cb77")
+
+        test("Private file deletion testing", async () => {
+            expect(async () => {
+                let file = await client.uploadFile({
+                    path: "./tests/resources/test-text.txt",
+                    name: "test-file",
+                    anonymous: false,
+                })
+
+                let id = file.id;
+
+                let anotherClient = new PixelDrain();
+                let sameFile = await anotherClient.getFile(id)
+
+                sameFile.delete().catch(e => {throw e})
+            }).toThrow(PixeldrainAPIError)
+        })
 
         test("Anonymous File deletion testing", async () => {
             expect(async () => {
                 let file = await client.uploadFile({
-                    path: "./resources/test-text.txt",
+                    path: "./tests/resources/test-text.txt",
                     name: "test-file",
                     anonymous: true,
                 })
 
-                uploadedTestFiles.push(file);
+                let id = file.id;
 
-                file.delete()
+                await file.delete()
 
+                await client.getFile(id);
             }).toThrow(PixeldrainAPIError)
         })
     })

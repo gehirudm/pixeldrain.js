@@ -18,7 +18,7 @@ export class PixelDrain {
         return new Promise<PixeldrainFile>((resolve, reject) => {
             this.pixeldrainService.getFileInfo(id)
                 .then((data) => {
-                    return new PixeldrainFile(data, this.pixeldrainService)
+                    resolve(new PixeldrainFile(data, this.pixeldrainService))
                 })
                 .catch(reject)
         })

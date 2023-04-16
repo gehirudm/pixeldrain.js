@@ -27,6 +27,8 @@ export class PixeldrainService {
         return new Promise<string>((resolve, reject) => {
             let readStream = fs.createReadStream(file.path);
 
+            readStream.on("error", reject)
+
             fetch(`${this.BASE_URL}/file/${file.name}`, {
                 method: 'PUT',
                 headers: file.anonymous ? undefined : this.authorizationHeader,
@@ -50,6 +52,9 @@ export class PixeldrainService {
      */
     public deleteFile(fileID: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
+            if (this.APIKey == "") {
+                reject()
+            }
             fetch(`${this.BASE_URL}/file/${fileID}`, {
                 method: 'delete',
                 headers: this.authorizationHeader
