@@ -5,6 +5,7 @@ import { List } from "../interfaces/list/listinterfaces";
 import fetch from 'node-fetch';
 import * as fs from 'fs';
 import * as http from 'http';
+import { PixeldrainAPIError } from "../components/errors/pixeldrainapierror";
 
 
 export class PixeldrainService {
@@ -34,7 +35,7 @@ export class PixeldrainService {
                 .then(async (res) => {
                     if (res.status > 400) {
                         let json = await res.json() as { success: boolean, value: string, message: string }
-                        reject(new Error(`Error occured whilst uploading file\nFile Name: ${file.name}\n${json.value}\n${json.message}`))
+                        reject(new PixeldrainAPIError('Error occured whilst uploading file', json.value, file.name))
                     }
                     return res.json();
                 }).then(function (json: { id: string }) {
@@ -56,7 +57,7 @@ export class PixeldrainService {
                 .then(async (res) => {
                     if (res.status > 400) {
                         let json = await res.json() as { sucess: boolean, value: string, message: string }
-                        reject(new Error(`Error occured whilst deleting a file.\nFile ID : ${fileID}\n${json.value}\n${json.message}`))
+                        reject(new PixeldrainAPIError("Error occured whilst deleting a file.", json.value, fileID))
                     }
                     resolve()
                 })
@@ -77,7 +78,7 @@ export class PixeldrainService {
                     if (res.status > 400) {
                         let json = await res.json() as { sucess: boolean, value: string }
 
-                        reject(new Error(`Error occured whilst obtaining file details. \nFile ID : ${fileID}\n${json.value}`))
+                        reject(new PixeldrainAPIError('Error occured whilst obtaining file details.', json.value, fileID))
                     }
                     return res.json()
                 })
