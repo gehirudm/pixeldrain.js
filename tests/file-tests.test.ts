@@ -67,6 +67,7 @@ describe("Testing File functions", () => {
                 anonymous: false,
             })
 
+            uploadedTestFiles.push(file);
             let id = file.id;
 
             let anotherClient = new PixelDrain();
