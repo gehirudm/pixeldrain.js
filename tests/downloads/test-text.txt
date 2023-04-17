@@ -1,0 +1,1 @@
+{"success":false,"value":"file_rate_limited_captcha_required","message":"This file is using too much bandwidth. For anonymous downloads a captcha is required now. The captcha entry is available on the download page"}

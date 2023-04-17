@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/gehirudm/pixeldrain.js#readme",
   "dependencies": {
+    "@supercharge/fs": "^3.4.0",
     "node-fetch": "^2.6.9",
     "typescript": "^5.0.4"
   },

@@ -4,7 +4,8 @@ import { List } from "../interfaces/list/listinterfaces";
 
 import fetch from 'node-fetch';
 import * as fs from 'fs';
-import * as http from 'http';
+const superchargedFs = require('@supercharge/fs');
+import * as https from 'https';
 import { PixeldrainAPIError } from "../components/errors/pixeldrainapierror";
 
 
@@ -24,10 +25,12 @@ export class PixeldrainService {
      * uploadFile
      */
     public uploadFile(file: PixeldrainFileUploadOptions): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
+        return new Promise<string>(async (resolve, reject) => {
             let readStream = fs.createReadStream(file.path);
-
             readStream.on("error", reject)
+
+            //TODO: Figure out what to do with file Name
+            file.name = await superchargedFs.basename(file.path)
 
             fetch(`${this.BASE_URL}/file/${file.name}`, {
                 method: 'PUT',
@@ -52,9 +55,6 @@ export class PixeldrainService {
      */
     public deleteFile(fileID: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            if (this.APIKey == "") {
-                reject()
-            }
             fetch(`${this.BASE_URL}/file/${fileID}`, {
                 method: 'delete',
                 headers: this.authorizationHeader
@@ -62,7 +62,7 @@ export class PixeldrainService {
                 .then(async (res) => {
                     if (res.status > 400) {
                         let json = await res.json() as { sucess: boolean, value: string, message: string }
-                        reject(new PixeldrainAPIError("Error occured whilst deleting a file.", json.value, fileID))
+                        return reject(new PixeldrainAPIError("Error occured whilst deleting a file.", json.value, fileID))
                     }
                     resolve()
                 })
@@ -83,7 +83,7 @@ export class PixeldrainService {
                     if (res.status > 400) {
                         let json = await res.json() as { sucess: boolean, value: string }
 
-                        reject(new PixeldrainAPIError('Error occured whilst obtaining file details.', json.value, fileID))
+                        return reject(new PixeldrainAPIError('Error occured whilst obtaining file details.', json.value, fileID))
                     }
                     return res.json()
                 })
@@ -100,8 +100,13 @@ export class PixeldrainService {
     public downloadFile(path: string = "", id: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.getFileInfo(id).then((file) => {
-                http.get(`${this.BASE_URL}/file/${id}`, function (response) {
+                https.get(`${this.BASE_URL}/file/${id}`, async function (response) {
+                    if (path != "") {
+                        await superchargedFs.ensureDir(path);
+                    }
                     const writeSteam = fs.createWriteStream(path == "" ? file.name : `${path}/${file.name}`)
+
+                    writeSteam.on("error", reject)
 
                     response.pipe(writeSteam);
 
@@ -109,8 +114,6 @@ export class PixeldrainService {
                         writeSteam.close();
                         resolve()
                     });
-
-                    writeSteam.on("error", reject)
                 });
             })
         })

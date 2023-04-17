@@ -12,7 +12,11 @@ export class PixelDrain {
     }
 
     /**
-     * getFile
+     * Retrieves file information from the API and returns it as a PixeldrainFile Object
+     *
+     * @param {string} id File ID
+     * @return {*}  {Promise<PixeldrainFile>}
+     * @memberof PixelDrain
      */
     public getFile(id: string): Promise<PixeldrainFile> {
         return new Promise<PixeldrainFile>((resolve, reject) => {
@@ -25,7 +29,11 @@ export class PixelDrain {
     }
 
     /**
-     * uploadFile
+     * Uploads a file to pixeldrain. A File can either be uploaded anonymously or under a user account
+     *
+     * @param {PixeldrainFileUploadOptions} file File Information
+     * @return {*}  {Promise<PixeldrainFile>}
+     * @memberof PixelDrain
      */
     public uploadFile(file:PixeldrainFileUploadOptions): Promise<PixeldrainFile> {
         return new Promise<PixeldrainFile>((resolve, reject) => {

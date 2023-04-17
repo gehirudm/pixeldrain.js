@@ -17,8 +17,14 @@ export class PixeldrainFile implements PixeldrainFileInterface {
     can_edit: boolean;
     description = "";
 
-    pixeldrainService: PixeldrainService;
+    private pixeldrainService: PixeldrainService;
 
+    /**
+     * Creates an instance of PixeldrainFile.
+     * @param {PixeldrainFileInformation} data File Information
+     * @param {PixeldrainService} pixeldrainService Pixeldrain API Service
+     * @memberof PixeldrainFile
+     */
     constructor(data: PixeldrainFileInformation, pixeldrainService: PixeldrainService) {
         this.pixeldrainService = pixeldrainService;
         ({
@@ -39,6 +45,12 @@ export class PixeldrainFile implements PixeldrainFileInterface {
         } = data)
     }
 
+    /**
+     * Deletes the file
+     *
+     * @return {*}  {Promise<void>}
+     * @memberof PixeldrainFile
+     */
     delete(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.pixeldrainService.deleteFile(this.id)
@@ -47,6 +59,13 @@ export class PixeldrainFile implements PixeldrainFileInterface {
         })
     }
 
+    /**
+     * Downloads the File
+     *
+     * @param {string} path Location to be downloaded
+     * @return {*}  {Promise<void>}
+     * @memberof PixeldrainFile
+     */
     download(path: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.pixeldrainService.downloadFile(path, this.id)
